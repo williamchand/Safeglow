@@ -90,8 +90,8 @@
 | SAFE-05 | Phase 5 | Pending |
 | SAFE-06 | Phase 5 | Pending |
 | COMP-01 | Phase 4 | Pending |
-| COMP-02 | Phase 5 | Pending |
-| COMP-03 | Phase 5 | Pending |
+| COMP-02 | Phase 6 | Pending |
+| COMP-03 | Phase 6 | Pending |
 | PROF-01 | Phase 2 | Pending |
 | PROF-02 | Phase 3 | Pending |
 | PROF-03 | Phase 2 | Pending |
@@ -99,8 +99,8 @@
 | PRIV-02 | Phase 1 | Pending |
 | PRIV-03 | Phase 1 | Pending |
 | PRIV-04 | Phase 5 | Pending |
-| DATA-01 | Phase 3 | Pending |
-| DATA-02 | Phase 5 | Pending |
+| DATA-01 | Phase 2 | Pending |
+| DATA-02 | Phase 6 | Pending |
 | DATA-03 | Phase 6 | Pending |
 | UI-01 | Phase 5 | Pending |
 | UI-02 | Phase 5 | Pending |
@@ -112,4 +112,4 @@
 
 ---
 *Requirements defined: 2026-04-25*
-*Last updated: 2026-04-25 after initial definition*
+*Last updated: 2026-04-25 after roadmap creation (traceability finalized)*
