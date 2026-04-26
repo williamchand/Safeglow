@@ -1,0 +1,142 @@
+{
+  "formatVersion": 1,
+  "database": {
+    "version": 1,
+    "identityHash": "8ef41e6448fcdff23892038c8b2f19dc",
+    "entities": [
+      {
+        "tableName": "ingredients",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `inciName` TEXT NOT NULL, `commonName` TEXT NOT NULL, `safetyTag` TEXT NOT NULL, `healthMechanism` TEXT NOT NULL, `affectedPopulation` TEXT NOT NULL, `doseThreshold` TEXT NOT NULL, `euStatus` TEXT NOT NULL, `usStatus` TEXT NOT NULL, `cnStatus` TEXT NOT NULL, `jpStatus` TEXT NOT NULL, `citationIds` TEXT NOT NULL, `confidence` REAL NOT NULL, `dataValidAsOf` TEXT NOT NULL)",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "inciName",
+            "columnName": "inciName",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "commonName",
+            "columnName": "commonName",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "safetyTag",
+            "columnName": "safetyTag",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "healthMechanism",
+            "columnName": "healthMechanism",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "affectedPopulation",
+            "columnName": "affectedPopulation",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "doseThreshold",
+            "columnName": "doseThreshold",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "euStatus",
+            "columnName": "euStatus",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "usStatus",
+            "columnName": "usStatus",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "cnStatus",
+            "columnName": "cnStatus",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "jpStatus",
+            "columnName": "jpStatus",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "citationIds",
+            "columnName": "citationIds",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "confidence",
+            "columnName": "confidence",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "dataValidAsOf",
+            "columnName": "dataValidAsOf",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": true,
+          "columnNames": [
+            "id"
+          ]
+        }
+      },
+      {
+        "tableName": "ingredients_fts",
+        "createSql": "CREATE VIRTUAL TABLE IF NOT EXISTS `${TABLE_NAME}` USING FTS4(`inciName` TEXT NOT NULL, content=`ingredients`)",
+        "fields": [
+          {
+            "fieldPath": "inciName",
+            "columnName": "inciName",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": []
+        },
+        "ftsVersion": "FTS4",
+        "ftsOptions": {
+          "tokenizer": "simple",
+          "tokenizerArgs": [],
+          "contentTable": "ingredients",
+          "languageIdColumnName": "",
+          "matchInfo": "FTS4",
+          "notIndexedColumns": [],
+          "prefixSizes": [],
+          "preferredOrder": "ASC"
+        },
+        "contentSyncTriggers": [
+          "CREATE TRIGGER IF NOT EXISTS room_fts_content_sync_ingredients_fts_BEFORE_UPDATE BEFORE UPDATE ON `ingredients` BEGIN DELETE FROM `ingredients_fts` WHERE `docid`=OLD.`rowid`; END",
+          "CREATE TRIGGER IF NOT EXISTS room_fts_content_sync_ingredients_fts_BEFORE_DELETE BEFORE DELETE ON `ingredients` BEGIN DELETE FROM `ingredients_fts` WHERE `docid`=OLD.`rowid`; END",
+          "CREATE TRIGGER IF NOT EXISTS room_fts_content_sync_ingredients_fts_AFTER_UPDATE AFTER UPDATE ON `ingredients` BEGIN INSERT INTO `ingredients_fts`(`docid`, `inciName`) VALUES (NEW.`rowid`, NEW.`inciName`); END",
+          "CREATE TRIGGER IF NOT EXISTS room_fts_content_sync_ingredients_fts_AFTER_INSERT AFTER INSERT ON `ingredients` BEGIN INSERT INTO `ingredients_fts`(`docid`, `inciName`) VALUES (NEW.`rowid`, NEW.`inciName`); END"
+        ]
+      }
+    ],
+    "setupQueries": [
+      "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '8ef41e6448fcdff23892038c8b2f19dc')"
+    ]
+  }
+}
