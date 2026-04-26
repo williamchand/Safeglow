@@ -1,22 +1,44 @@
 package com.safeglow.edge
 
+import com.safeglow.edge.data.inference.LiteRTInferenceService
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
-import org.junit.Ignore
+import kotlinx.coroutines.runBlocking
+import org.junit.After
+import org.junit.Assert.fail
+import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
+import javax.inject.Inject
 
 /**
- * Phase 1 SC-3: Engine.initialize() falls back to CPU without exception when GPU unavailable.
- * STUB — implementation lands in Plan 03.
+ * Phase 1 SC-3: initialize() must NOT propagate an exception, regardless of GPU
+ * availability. Devices without OpenCL (e.g. Pixel 8 Pro / Tensor G3) trigger the
+ * try/catch GPU->CPU fallback inside the service. Any exception leaking out of
+ * initialize() is a fatal Phase 1 regression.
  */
 @HiltAndroidTest
 class GpuFallbackTest {
+
     @get:Rule val hiltRule = HiltAndroidRule(this)
 
+    @Inject lateinit var inferenceService: LiteRTInferenceService
+
+    @Before
+    fun setUp() { hiltRule.inject() }
+
+    @After
+    fun tearDown() { inferenceService.close() }
+
     @Test
-    @Ignore("Awaiting Plan 03: try/catch GPU->CPU fallback in LiteRTInferenceService.initialize(). Test must call initialize() and assert no exception propagated.")
-    fun initializeDoesNotThrowOnAnyDevice() {
-        // TODO Plan 03: hiltRule.inject(); inferenceService.initialize(); assert no exception.
+    fun initializeDoesNotThrowOnAnyDevice() = runBlocking {
+        try {
+            inferenceService.initialize()
+        } catch (t: Throwable) {
+            fail(
+                "SC-3: initialize() must catch GPU failures and fall back to CPU. " +
+                    "Got: ${t::class.java.simpleName}: ${t.message}"
+            )
+        }
     }
 }
