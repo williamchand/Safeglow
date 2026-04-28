@@ -53,18 +53,21 @@ Exceptions:
 
 All sizes use Material3 typography roles from `MaterialTheme.typography`. Map roles to concrete values below so the executor does not need to infer defaults.
 
+**Permitted weights: Regular (400) and SemiBold (600) only. No other weights are allowed in Phase 2.**
+
 | Role | Size | Weight | Line Height | Usage in Phase 2 |
 |------|------|--------|-------------|-----------------|
 | Body | 14sp | Regular (400) | 1.5 | OCR status messages, manual input hint text, dropdown label text |
-| Label | 12sp | Medium (500) | 1.3 | Section labels above dropdowns ("Pregnancy Status"), chip labels |
+| Label | 12sp | Regular (400) | 1.3 | Section labels above dropdowns ("Pregnancy Status"), chip labels |
 | Heading | 20sp | SemiBold (600) | 1.2 | Screen title ("Scan Label", "Your Profile"), permission rationale heading |
-| Display | 28sp | Bold (700) | 1.1 | Not used in Phase 2 |
+| Display | 28sp | SemiBold (600) | 1.1 | Not used in Phase 2 |
 
 Notes:
 - Use `MaterialTheme.typography.bodyMedium` for 14sp/Regular
-- Use `MaterialTheme.typography.labelSmall` for 12sp/Medium
+- Use `MaterialTheme.typography.labelSmall` for 12sp/Regular
 - Use `MaterialTheme.typography.titleLarge` for 20sp/SemiBold
 - Do NOT declare custom TextStyle objects — use Material3 named roles exclusively
+- Medium (500) and Bold (700) weights are not permitted in this phase
 
 ---
 
@@ -109,6 +112,8 @@ onError = #FFFFFF
 ### Screen 1: CameraScreen
 
 **Route:** `CAMERA` (introduce navigation-compose in Phase 2 — see RESEARCH.md Open Question 1)
+
+**Focal point:** Capture FAB — the single primary action on this screen.
 
 **Layout:**
 
@@ -155,6 +160,8 @@ onError = #FFFFFF
 ### Screen 2: ProfileScreen
 
 **Route:** `PROFILE`
+
+**Focal point:** Session context card — the three dropdowns that personalize safety insights.
 
 **Layout:**
 
@@ -212,6 +219,8 @@ Use `ExposedDropdownMenuBox` + `ExposedDropdownMenu` + `DropdownMenuItem` from M
 
 Manual input is NOT a separate navigation destination. It appears as a bottom sheet (`ModalBottomSheet`) launched from CameraScreen when the user taps "Enter manually" in the OCR zero-results or OCR error state.
 
+**Focal point:** Ingredient list TextField — the single input the user must complete to proceed.
+
 **Layout:**
 
 ```
@@ -227,7 +236,7 @@ Manual input is NOT a separate navigation destination. It appears as a bottom sh
 │  └───────────────────────────────────────────┘  │
 │                                                 │
 │  [ Analyze Ingredients ]   (Button, accent fill) │
-│  [ Cancel ]                (TextButton, no fill) │
+│  [ Keep scanning ]         (TextButton, no fill) │
 │                                                 │
 └─────────────────────────────────────────────────┘
 ```
@@ -237,7 +246,7 @@ Manual input is NOT a separate navigation destination. It appears as a bottom sh
 - Show character count: `{n}/1000` in 12sp onSurfaceVariant below the TextField, right-aligned. Updates on every keystroke.
 - "Analyze Ingredients" button is disabled when the TextField is blank or contains only whitespace.
 - "Analyze Ingredients" button triggers the same `INCINormalizer` pipeline as the OCR path (SCAN-02 requirement).
-- Cancel dismisses the bottom sheet. The camera preview remains paused behind the sheet.
+- "Keep scanning" dismisses the bottom sheet. The camera preview remains paused behind the sheet.
 
 ---
 
@@ -248,6 +257,7 @@ Manual input is NOT a separate navigation destination. It appears as a bottom sh
 | Primary CTA — Camera | "Scan Label" (FAB icon + label when FAB is expanded; icon-only when compact) |
 | Primary CTA — Manual Input | "Analyze Ingredients" |
 | Primary CTA — Profile | No explicit CTA — dropdowns are self-completing; no submit button needed |
+| Manual input dismiss | "Keep scanning" |
 | Empty state — no session set | "Set your profile to personalize safety insights." (body, centered) |
 | Empty state — manual input blank | Button disabled; no message needed; hint text in TextField is sufficient |
 | OCR success | "Extracted {N} ingredients" |
@@ -278,11 +288,11 @@ No `ResultsScreen` route yet — Phase 5 adds that.
 ### Back stack behavior
 
 - CameraScreen → ProfileScreen: ProfileScreen pushed onto back stack. Back presses return to CameraScreen.
-- CameraScreen → ManualInput bottom sheet: bottom sheet is modal, not a navigation destination. Dismiss via drag or Cancel button.
+- CameraScreen → ManualInput bottom sheet: bottom sheet is modal, not a navigation destination. Dismiss via drag or "Keep scanning" button.
 
 ### Scan → Profile linking
 
-A profile icon button in the top-right of CameraScreen navigates to ProfileScreen. Use `Icons.Default.Person` from Material Icons. Size: 24dp. Touch target: 48dp (pad with 12dp on each side via `Modifier.clickable` or `IconButton`).
+A profile icon button in the top-right of CameraScreen navigates to ProfileScreen. Use `Icons.Default.Person` from Material Icons. Size: 24dp. Touch target: 48dp (pad with 12dp on each side via `Modifier.clickable` or `IconButton`). `contentDescription = "Open profile"`.
 
 ### Loading / progress
 
@@ -295,6 +305,7 @@ Do NOT show `CircularProgressIndicator` or `LinearProgressIndicator` as standalo
 ### Accessibility
 
 - Capture FAB: `contentDescription = "Capture product label"` on the FAB icon
+- Profile icon button (CameraScreen top bar): `contentDescription = "Open profile"`
 - OCR status chip: `semantics { liveRegion = LiveRegionMode.Polite }` so screen readers announce state changes
 - DropdownMenu items: use `DropdownMenuItem(text = { Text(...) })` — Material3 handles selection semantics
 - Back button in ProfileScreen: `contentDescription = "Back"` on the navigation icon
@@ -326,6 +337,7 @@ No third-party UI registry components are declared for Phase 2.
 | STATE.md | Dark theme rationale (on-device, privacy-first scanner); hackathon deadline context (no over-engineering) |
 | libs.versions.toml | compose-bom = 2026.03.00, minSdk 26, compileSdk 35 confirmed |
 | User input | 0 (--auto mode; all decisions made from upstream artifacts and sensible defaults) |
+| Checker revision (2026-04-28) | "Cancel" replaced with "Keep scanning"; font weights reduced to Regular (400) + SemiBold (600) only; focal point added to each screen; profile icon contentDescription added |
 
 ---
 
