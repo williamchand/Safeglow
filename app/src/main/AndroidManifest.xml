@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <!-- INTENTIONAL: zero <uses-permission> entries.
-         PRIV-01 / PRIV-03 require zero network egress. PRIV-02 requires no auth.
-         Adding INTERNET, ACCESS_NETWORK_STATE, READ_PHONE_STATE etc. is forbidden in Phase 1.
-         Verified by LiteRTNoNetworkTest and `./gradlew lint`. -->
+    <!-- Phase 2: CAMERA permission required for CameraX image capture (SCAN-01).
+         INTERNET permission intentionally absent — ML Kit uses bundled model (offline).
+         PRIV-01/PRIV-03: zero network egress maintained. -->
+    <uses-permission android:name="android.permission.CAMERA" />
 
     <application
         android:name=".MainApplication"

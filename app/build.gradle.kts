@@ -76,6 +76,18 @@ dependencies {
     implementation(libs.compose.ui)
     implementation(libs.compose.material3)
 
+    // CameraX
+    implementation(libs.camera.core)
+    implementation(libs.camera.camera2)
+    implementation(libs.camera.lifecycle)
+    implementation(libs.camera.view)
+
+    // ML Kit Text Recognition v2 (bundled — offline, no network)
+    implementation(libs.mlkit.text.recognition)
+
+    // Compose camera permission helper
+    implementation(libs.accompanist.permissions)
+
     // Test
     testImplementation(libs.junit)
 
