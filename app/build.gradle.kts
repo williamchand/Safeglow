@@ -8,7 +8,7 @@ plugins {
 
 android {
     namespace = "com.safeglow.edge"
-    compileSdk = 35
+    compileSdk = 36
 
     defaultConfig {
         applicationId = "com.safeglow.edge"
@@ -87,6 +87,18 @@ dependencies {
 
     // Compose camera permission helper
     implementation(libs.accompanist.permissions)
+
+    // Hilt + Navigation Compose (hiltViewModel() in composables)
+    implementation(libs.hilt.navigation.compose)
+
+    // Lifecycle runtime compose (collectAsStateWithLifecycle)
+    implementation(libs.lifecycle.runtime.compose)
+
+    // Concurrent futures KTX (ListenableFuture.await() for ProcessCameraProvider)
+    implementation(libs.concurrent.futures.ktx)
+
+    // Guava (provides ListenableFuture type used by ProcessCameraProvider.getInstance())
+    implementation(libs.guava)
 
     // Test
     testImplementation(libs.junit)
